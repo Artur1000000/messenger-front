@@ -27,7 +27,6 @@ export default function Content({ user, itemTag }: IContentProps): JSX.Element {
   const scrollElement: any = useRef();
   useEffect(() => {
     scrollElement.current.scrollTop = scrollElement.current.scrollHeight;
-    console.log(scrollElement);
   }, [data]);
   return (
     <div

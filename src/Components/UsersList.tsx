@@ -13,6 +13,7 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { getUsers } from "../redux/slices/userSlice";
 import { IUserData } from "../types";
+import { writeMessage } from "../redux/slices/messageSlice";
 
 export default function UsersList({ changeUser, user }: any) {
   const dispatch = useAppDispatch();
@@ -26,6 +27,18 @@ export default function UsersList({ changeUser, user }: any) {
     }
   }, [dispatch, userName, id]);
 
+  const read = (prop: string) => {
+    changeUser(prop);
+    if (prop !== userName) {
+      let a =
+        messages &&
+        messages.messages.filter(
+          (element) => element.from === prop && !element.status
+        ).map(i=>i._id);
+        a?.length && dispatch(writeMessage(a));
+    }
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -37,22 +50,39 @@ export default function UsersList({ changeUser, user }: any) {
             data.map((item: IUserData) => {
               return (
                 <ListItem
-                  onClick={() => changeUser(item.userName)}
+                  onClick={() => read(item.userName)}
                   key={item.id}
                   secondaryAction={
                     <IconButton edge="end" aria-label="delete">
-                      {
-                        item.userName!==userName &&
-                        <Badge color="secondary" badgeContent={messages && messages.messages.filter((element) => element.from === item.userName && !element.status).length}>
-                        <MailOutlineIcon />
-                      </Badge>
-                      }
-                      {
-                        item.userName===userName &&
-                        <Badge color="secondary" badgeContent={messages && messages.messages.filter((element) => element.to === userName && !element.status).length}>
-                        <MailOutlineIcon />
-                      </Badge>
-                      }
+                      {item.userName !== userName && (
+                        <Badge
+                          color="secondary"
+                          badgeContent={
+                            messages &&
+                            messages.messages.filter(
+                              (element) =>
+                                element.from === item.userName &&
+                                !element.status
+                            ).length
+                          }
+                        >
+                          <MailOutlineIcon />
+                        </Badge>
+                      )}
+                      {item.userName === userName && (
+                        <Badge
+                          color="secondary"
+                          badgeContent={
+                            messages &&
+                            messages.messages.filter(
+                              (element) =>
+                                element.to === userName && !element.status
+                            ).length
+                          }
+                        >
+                          <MailOutlineIcon />
+                        </Badge>
+                      )}
                     </IconButton>
                   }
                   style={{

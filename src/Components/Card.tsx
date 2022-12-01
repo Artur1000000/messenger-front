@@ -40,7 +40,7 @@ export default function Card({
       dispatch(writeMessage([id]));
     }
   };
-  console.log(state)
+
   return (
     <Paper>
       <Typography style={{ cursor: "pointer" }} onClick={() => open()}>
