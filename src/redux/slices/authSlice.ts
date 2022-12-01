@@ -15,8 +15,13 @@ const initialState: IInitialStateAuth = {
 export const authUser = createAsyncThunk(
     "auth/authUser",
     async (userName: string) => {
-        const { data } = await axios.post("/auth", { userName });
-        return data;
+        try {
+            const { data } = await axios.post("/auth", { userName });
+            return data;
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
 );
 
