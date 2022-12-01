@@ -19,8 +19,8 @@ export const authUser = createAsyncThunk(
             const { data } = await axios.post("/auth", { userName });
             return data;
         }
-        catch (e) {
-            console.log(e)
+        catch (error) {
+            console.log(error)
         }
     }
 );

@@ -2,14 +2,16 @@ import React from "react";
 import { Box, Button, Grid, Paper, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { Field } from "../Components/Field";
+import CircularProgress from "@mui/material/CircularProgress";
 import { authUser } from "../redux/slices/authSlice";
-import { useAppDispatch } from "../hook";
+import { useAppDispatch, useAppSelector } from "../hook";
 
 export type FormInputs = {
   userName: string;
 };
 
 export default function AuthPage() {
+  const { status } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const {
     register,
@@ -72,16 +74,19 @@ export default function AuthPage() {
             error={!!errors?.userName}
             helperText={errors?.userName && errors.userName.message}
           />
-          <Button
-            type="submit"
-            color="info"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            disabled={!isValid}
-          >
-            Sign In
-          </Button>
+          {status !== "loading" && (
+            <Button
+              type="submit"
+              color="info"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={!isValid}
+            >
+              Sign In
+            </Button>
+          )}
+          {status === "loading" && <CircularProgress />}
         </Box>
       </Paper>
     </Grid>
