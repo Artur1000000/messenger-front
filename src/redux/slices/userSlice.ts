@@ -10,8 +10,12 @@ const initialState: IInitialStateUsers = {
 
 
 export const getUsers = createAsyncThunk("users/getUsers", async ({ userName, id }: IAuthUser) => {
-    const { data } = await axios.get("/users", {params:{userName, id}});
-    return data;
+    try {
+        const { data } = await axios.get("/users", { params: { userName, id } });
+        return data;
+    } catch (error) {
+
+    }
 });
 
 export const userSlice = createSlice({

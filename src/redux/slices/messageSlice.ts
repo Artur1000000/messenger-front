@@ -18,20 +18,31 @@ const initialState: IInitialState = {
 };
 
 export const getMessages = createAsyncThunk("messages/getMessages", async ({ userName, id }: IAuthUser) => {
-    const { data } = await axios.get("/getMessages", { params: { userName, id } });
-    return data;
+    try {
+        const { data } = await axios.get("/getMessages", { params: { userName, id } });
+        return data;
+    } catch (error) {
+
+    }
 });
 
 export const writeMessage = createAsyncThunk("messages/writeMessage", async (ids: string[]) => {
-    const { data } = await axios.patch("/changeStatus", { ids });
-    return data;
+    try {
+        const { data } = await axios.patch("/changeStatus", { ids });
+        return data;
+    } catch (error) {
+    }
 });
 
 export const sendMessage = createAsyncThunk(
     "messages/sendMessage",
     async ({ from, to, theme, text }: ISendProps) => {
-        const { data } = await axios.post("/create", { from, to, theme, text });
-        return data;
+        try {
+            const { data } = await axios.post("/create", { from, to, theme, text });
+            return data;
+        } catch (error) {
+
+        }
     }
 );
 
